@@ -346,10 +346,269 @@
             .character.monkey { left: 24%; }
             .character.lion { right: 23%; }
         }
+
+        /* Animated jungle background */
+        body {
+            background:
+                linear-gradient(rgba(214,248,220,.30), rgba(255,238,194,.38)),
+                linear-gradient(180deg, #9ee8b2 0%, #d9f6c8 38%, #f9e8bd 100%);
+        }
+
+        .jungle-bg {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .jungle-sun {
+            position: absolute;
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            right: 8%;
+            top: 7%;
+            background: #ffe26b;
+            box-shadow: 0 0 45px rgba(255,226,107,.7);
+            animation: sunPulse 4s ease-in-out infinite;
+        }
+
+        .jungle-cloud {
+            position: absolute;
+            width: 170px;
+            height: 45px;
+            background: rgba(255,255,255,.72);
+            border-radius: 999px;
+            filter: blur(.2px);
+            animation: cloudMove 22s linear infinite;
+        }
+        .jungle-cloud::before,
+        .jungle-cloud::after {
+            content: "";
+            position: absolute;
+            background: inherit;
+            border-radius: 50%;
+        }
+        .jungle-cloud::before { width: 65px; height: 65px; left: 28px; bottom: 0; }
+        .jungle-cloud::after { width: 85px; height: 85px; right: 25px; bottom: 0; }
+        .cloud-a { top: 14%; left: -200px; }
+        .cloud-b { top: 30%; left: -300px; animation-delay: 9s; transform: scale(.72); }
+
+        .tree {
+            position: absolute;
+            bottom: -15px;
+            width: 170px;
+            height: 470px;
+            opacity: .82;
+        }
+        .tree::before {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 74px;
+            width: 34px;
+            height: 360px;
+            background: #80532f;
+            border-radius: 50% 50% 8px 8px;
+            transform: rotate(2deg);
+        }
+        .tree::after {
+            content: "";
+            position: absolute;
+            left: 5px;
+            top: 25px;
+            width: 155px;
+            height: 155px;
+            border-radius: 50%;
+            background: #3c9c55;
+            box-shadow: 55px 35px 0 #4eaf60, 18px 75px 0 #32894a, 90px 92px 0 #3b9650;
+        }
+        .tree.left { left: -28px; transform: scale(1.12); }
+        .tree.right { right: -32px; transform: scale(1.08); }
+        .tree.far-left { left: 12%; transform: scale(.66); opacity: .45; }
+        .tree.far-right { right: 13%; transform: scale(.68); opacity: .45; }
+
+        .grass {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 75px;
+            background: linear-gradient(180deg, transparent, rgba(45,126,64,.22));
+        }
+
+        .vine {
+            position: absolute;
+            top: -10px;
+            width: 120px;
+            height: 260px;
+            border-left: 7px solid #3c7f3d;
+            border-radius: 0 0 0 100%;
+            transform-origin: top center;
+            animation: vineSwing 4s ease-in-out infinite;
+        }
+        .vine::before,
+        .vine::after {
+            content: "🍃";
+            position: absolute;
+            font-size: 28px;
+        }
+        .vine::before { left: -16px; top: 65px; }
+        .vine::after { left: 8px; top: 145px; }
+        .vine.left-vine { left: 7%; }
+        .vine.right-vine { right: 7%; animation-delay: 1.4s; }
+
+        .jungle-character {
+            position: absolute;
+            z-index: 3;
+            filter: drop-shadow(5px 7px 0 rgba(36,27,53,.16));
+        }
+
+        .hanging-monkey {
+            width: 135px;
+            top: 6px;
+            left: 18%;
+            transform-origin: 50% 0;
+            animation: monkeySwing 3.2s ease-in-out infinite;
+        }
+        .hanging-monkey svg { width: 100%; height: auto; overflow: visible; }
+
+        .playing-elephant {
+            width: 175px;
+            right: 3%;
+            bottom: 8px;
+            animation: elephantPlay 2.7s ease-in-out infinite;
+        }
+        .playing-elephant svg { width: 100%; height: auto; overflow: visible; }
+
+        .butterflies {
+            position: absolute;
+            font-size: 27px;
+            animation: butterflyFloat 6s ease-in-out infinite;
+        }
+        .butterfly-a { left: 35%; top: 23%; }
+        .butterfly-b { right: 26%; top: 40%; animation-delay: 2s; }
+
+        .fireflies {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #fff38a;
+            box-shadow: 0 0 18px 6px rgba(255,243,138,.65);
+            animation: firefly 2.8s ease-in-out infinite;
+        }
+        .firefly-a { left: 10%; top: 54%; }
+        .firefly-b { right: 15%; top: 62%; animation-delay: .8s; }
+        .firefly-c { left: 47%; top: 73%; animation-delay: 1.5s; }
+
+        @keyframes sunPulse {
+            0%,100% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+        }
+        @keyframes cloudMove {
+            from { transform: translateX(0); }
+            to { transform: translateX(calc(100vw + 500px)); }
+        }
+        @keyframes vineSwing {
+            0%,100% { transform: rotate(2deg); }
+            50% { transform: rotate(-5deg); }
+        }
+        @keyframes monkeySwing {
+            0%,100% { transform: rotate(-7deg) translateY(0); }
+            50% { transform: rotate(7deg) translateY(10px); }
+        }
+        @keyframes elephantPlay {
+            0%,100% { transform: translateX(0) rotate(0); }
+            25% { transform: translateX(-10px) rotate(-2deg); }
+            50% { transform: translateX(3px) rotate(2deg); }
+            75% { transform: translateX(-6px) rotate(-1deg); }
+        }
+        @keyframes butterflyFloat {
+            0%,100% { transform: translate(0,0) rotate(-5deg); }
+            50% { transform: translate(30px,-25px) rotate(8deg); }
+        }
+        @keyframes firefly {
+            0%,100% { opacity: .25; transform: translate(0,0); }
+            50% { opacity: 1; transform: translate(18px,-20px); }
+        }
+
+        .page { position: relative; z-index: 2; }
+        .hero, .generator, .result {
+            background: rgba(255,255,255,.96);
+        }
+
+        @media (max-width: 760px) {
+            .tree { transform: scale(.72); transform-origin: bottom; }
+            .tree.left { left: -70px; }
+            .tree.right { right: -75px; }
+            .tree.far-left, .tree.far-right { display: none; }
+            .hanging-monkey { width: 90px; left: 7%; top: 3px; }
+            .playing-elephant { width: 105px; right: -18px; bottom: 5px; }
+            .jungle-sun { width: 85px; height: 85px; }
+            .vine { display: none; }
+        }
+
     </style>
 </head>
 
 <body>
+
+
+<div class="jungle-bg" aria-hidden="true">
+    <div class="jungle-sun"></div>
+    <div class="jungle-cloud cloud-a"></div>
+    <div class="jungle-cloud cloud-b"></div>
+    <div class="tree left"></div>
+    <div class="tree right"></div>
+    <div class="tree far-left"></div>
+    <div class="tree far-right"></div>
+    <div class="vine left-vine"></div>
+    <div class="vine right-vine"></div>
+    <div class="grass"></div>
+
+    <!-- Monkey hanging from a jungle vine -->
+    <div class="jungle-character hanging-monkey">
+        <svg viewBox="0 0 150 210" aria-label="animated hanging cartoon monkey">
+            <path d="M73 4 Q77 58 67 105 Q58 143 78 173" fill="none" stroke="#80532f" stroke-width="9" stroke-linecap="round"/>
+            <circle cx="77" cy="88" r="34" fill="#a96b3f" stroke="#241b35" stroke-width="5"/>
+            <circle cx="49" cy="88" r="14" fill="#d99b69" stroke="#241b35" stroke-width="4"/>
+            <circle cx="105" cy="88" r="14" fill="#d99b69" stroke="#241b35" stroke-width="4"/>
+            <ellipse cx="77" cy="104" rx="21" ry="17" fill="#f1c08c"/>
+            <circle cx="66" cy="83" r="5" fill="#241b35"/><circle cx="88" cy="83" r="5" fill="#241b35"/>
+            <path d="M68 108 Q77 116 86 108" fill="none" stroke="#241b35" stroke-width="4" stroke-linecap="round"/>
+            <path d="M55 117 Q35 142 31 169" fill="none" stroke="#a96b3f" stroke-width="11" stroke-linecap="round"/>
+            <path d="M99 117 Q118 141 125 168" fill="none" stroke="#a96b3f" stroke-width="11" stroke-linecap="round"/>
+            <path d="M50 130 Q18 120 20 98" fill="none" stroke="#a96b3f" stroke-width="11" stroke-linecap="round"/>
+            <path d="M105 131 Q132 117 132 94" fill="none" stroke="#a96b3f" stroke-width="11" stroke-linecap="round"/>
+            <circle cx="20" cy="96" r="7" fill="#a96b3f" stroke="#241b35" stroke-width="3"/>
+            <circle cx="132" cy="93" r="7" fill="#a96b3f" stroke="#241b35" stroke-width="3"/>
+        </svg>
+    </div>
+
+    <!-- Elephant happily playing/bouncing -->
+    <div class="jungle-character playing-elephant">
+        <svg viewBox="0 0 200 180" aria-label="animated playing cartoon elephant">
+            <ellipse cx="96" cy="164" rx="65" ry="12" fill="#78a85f" opacity=".55"/>
+            <path d="M50 85 Q28 57 52 35 Q82 11 124 31 Q157 46 154 91 L145 132 Q136 157 96 158 Q55 157 49 127Z" fill="#b9d9e8" stroke="#241b35" stroke-width="5"/>
+            <path d="M137 83 Q181 75 177 111 Q174 137 149 129" fill="#b9d9e8" stroke="#241b35" stroke-width="5"/>
+            <circle cx="80" cy="67" r="7" fill="#241b35"/><circle cx="119" cy="67" r="7" fill="#241b35"/>
+            <path d="M78 96 Q99 112 120 96" fill="none" stroke="#241b35" stroke-width="5" stroke-linecap="round"/>
+            <path d="M52 49 Q27 36 33 19 Q50 25 61 44" fill="#a6ccdf" stroke="#241b35" stroke-width="5"/>
+            <path d="M135 49 Q159 33 167 19 Q174 39 148 57" fill="#a6ccdf" stroke="#241b35" stroke-width="5"/>
+            <path d="M64 132 L56 162 M128 132 L138 162" stroke="#9fc5d8" stroke-width="14" stroke-linecap="round"/>
+            <circle cx="174" cy="56" r="7" fill="#ffd34e"/>
+            <path d="M174 40 L174 72 M158 56 L190 56" stroke="#ffd34e" stroke-width="3"/>
+        </svg>
+    </div>
+
+    <div class="butterflies butterfly-a">🦋</div>
+    <div class="butterflies butterfly-b">🦋</div>
+        <div class="fireflies firefly-a"></div>
+    <div class="fireflies firefly-b"></div>
+    <div class="fireflies firefly-c"></div>
+</div>
 
 <div class="page">
 
