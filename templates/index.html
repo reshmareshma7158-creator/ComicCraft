@@ -1,52 +1,433 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>ComicCraft - AI Comic Story Creator</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #fff3e6, #f3e8ff, #e5f6ff);
+            color: #29233d;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Floating cartoon characters */
+
+        .character {
+            position: fixed;
+            font-size: 55px;
+            z-index: 0;
+            animation: float 4s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        .elephant {
+            left: 3%;
+            top: 18%;
+        }
+
+        .monkey {
+            right: 4%;
+            top: 25%;
+            animation-delay: 1s;
+        }
+
+        .lion {
+            left: 5%;
+            bottom: 12%;
+            animation-delay: 2s;
+        }
+
+        .bunny {
+            right: 5%;
+            bottom: 10%;
+            animation-delay: 1.5s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(-3deg);
+            }
+
+            50% {
+                transform: translateY(-18px) rotate(3deg);
+            }
+        }
+
+        /* Main container */
+
+        .container {
+            width: 92%;
+            max-width: 900px;
+            margin: auto;
+            position: relative;
+            z-index: 2;
+            padding: 35px 0;
+        }
+
+        /* Header */
+
+        .hero {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 30px 20px;
+            border-radius: 30px;
+            box-shadow: 0 12px 35px rgba(60, 40, 100, 0.15);
+            border: 3px solid white;
+        }
+
+        .logo {
+            font-size: 45px;
+            margin: 0;
+            font-weight: 800;
+        }
+
+        .subtitle {
+            font-size: 19px;
+            margin-top: 10px;
+            color: #6b5b95;
+        }
+
+        .tagline {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 8px 18px;
+            border-radius: 30px;
+            background: #ffe0f0;
+            color: #8c3560;
+            font-weight: bold;
+        }
+
+        /* Comic characters row */
+
+        .characters {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 25px 0;
+            font-size: 48px;
+        }
+
+        .characters span {
+            display: inline-block;
+            animation: bounce 2s infinite;
+        }
+
+        .characters span:nth-child(2) {
+            animation-delay: .2s;
+        }
+
+        .characters span:nth-child(3) {
+            animation-delay: .4s;
+        }
+
+        .characters span:nth-child(4) {
+            animation-delay: .6s;
+        }
+
+        .characters span:nth-child(5) {
+            animation-delay: .8s;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        /* Generator card */
+
+        .generator {
+            background: white;
+            margin-top: 25px;
+            padding: 30px;
+            border-radius: 28px;
+            box-shadow: 0 12px 35px rgba(60, 40, 100, 0.15);
+        }
+
+        .generator h2 {
+            text-align: center;
+            margin-top: 0;
+            font-size: 28px;
+        }
+
+        .generator p {
+            text-align: center;
+            color: #777;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin: 22px 0 10px;
+            font-size: 17px;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 130px;
+            resize: vertical;
+            border: 2px solid #ddd;
+            border-radius: 18px;
+            padding: 16px;
+            font-size: 16px;
+            outline: none;
+            transition: .3s;
+        }
+
+        textarea:focus {
+            border-color: #8c5cff;
+            box-shadow: 0 0 0 4px rgba(140, 92, 255, .12);
+        }
+
+        button {
+            width: 100%;
+            margin-top: 20px;
+            padding: 16px;
+            border: none;
+            border-radius: 18px;
+            background: linear-gradient(90deg, #7c4dff, #c04cff);
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(124, 77, 255, .3);
+            transition: .3s;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(124, 77, 255, .4);
+        }
+
+        /* Result */
+
+        .result {
+            margin-top: 30px;
+            background: white;
+            padding: 28px;
+            border-radius: 28px;
+            box-shadow: 0 12px 35px rgba(60, 40, 100, 0.15);
+            border: 4px solid #ffd36b;
+        }
+
+        .result-title {
+            text-align: center;
+            font-size: 28px;
+            color: #6537c7;
+        }
+
+        .story-box {
+            background: #fff8e8;
+            border-left: 6px solid #ffb300;
+            padding: 18px;
+            border-radius: 15px;
+            line-height: 1.7;
+            white-space: pre-line;
+        }
+
+        .scene-title {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 24px;
+        }
+
+        .comic-panels {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .panel {
+            min-height: 130px;
+            padding: 20px;
+            border: 3px dashed #8c5cff;
+            border-radius: 18px;
+            background: #f8f2ff;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        /* Footer */
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 15px;
+            color: #777;
+        }
+
+        /* Mobile */
+
+        @media (max-width: 600px) {
+
+            .container {
+                width: 94%;
+                padding: 20px 0;
+            }
+
+            .logo {
+                font-size: 34px;
+            }
+
+            .subtitle {
+                font-size: 16px;
+            }
+
+            .characters {
+                gap: 10px;
+                font-size: 36px;
+            }
+
+            .character {
+                font-size: 40px;
+                opacity: .7;
+            }
+
+            .generator,
+            .result {
+                padding: 20px;
+            }
+
+            .comic-panels {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-    <h1>🎨 ComicCraft</h1>
-    <h2>AI Comic Story Creator using Gemini</h2>
+    <!-- Floating cartoon friends -->
 
-    <form action="/generate" method="post">
+    <div class="character elephant">🐘</div>
+    <div class="character monkey">🐒</div>
+    <div class="character lion">🦁</div>
+    <div class="character bunny">🐰</div>
 
-        <label>Enter your story idea:</label>
-        <br><br>
+    <div class="container">
 
-        <input
-            type="text"
-            name="prompt"
-            placeholder="Example: A superhero saves the city"
-            required
-        >
+        <!-- Header -->
 
-        <br><br>
+        <section class="hero">
 
-        <button type="submit">✨ Generate Comic</button>
+            <h1 class="logo">🎨 ComicCraft</h1>
 
-    </form>
+            <div class="subtitle">
+                AI Comic Story Creator
+            </div>
 
-    <hr>
+            <div class="tagline">
+                ✨ Imagine • Create • Story • Smile ✨
+            </div>
 
-    {% if result %}
+            <div class="characters">
+                <span>🐘</span>
+                <span>🐒</span>
+                <span>🦁</span>
+                <span>🐰</span>
+                <span>🧚</span>
+            </div>
 
-        <h2>📖 {{ result.title }}</h2>
+        </section>
 
-        <p>{{ result.story }}</p>
 
-        <h3>🎬 Comic Scenes</h3>
+        <!-- Generator -->
 
-        {% for scene in result.scenes %}
-            <p>🖼️ {{ scene }}</p>
-        {% endfor %}
+        <section class="generator">
 
-    {% else %}
+            <h2>💭 Create Your Own Comic!</h2>
 
-        <h2>Your Comic Story</h2>
-        <p>Enter a story idea above and click Generate Comic.</p>
+            <p>
+                Give us your story idea and let AI turn it into a comic story.
+            </p>
 
-    {% endif %}
+            <form action="/generate" method="post">
+
+                <label>
+                    ✍️ Enter your story idea
+                </label>
+
+                <textarea
+                    name="prompt"
+                    placeholder="Example: A brave little elephant goes on an adventure with a funny monkey..."
+                    required></textarea>
+
+                <button type="submit">
+                    ✨ Generate My Comic ✨
+                </button>
+
+            </form>
+
+        </section>
+
+
+        <!-- AI Result -->
+
+        {% if result %}
+
+        <section class="result">
+
+            <h2 class="result-title">
+                📖 {{ result.title }}
+            </h2>
+
+            <div class="story-box">
+                {{ result.story }}
+            </div>
+
+            <h3 class="scene-title">
+                🎬 Comic Scenes
+            </h3>
+
+            <div class="comic-panels">
+
+                <div class="panel">
+                    🎬 <br>
+                    <strong>Scene 1</strong>
+                </div>
+
+                <div class="panel">
+                    🎬 <br>
+                    <strong>Scene 2</strong>
+                </div>
+
+                <div class="panel">
+                    🎬 <br>
+                    <strong>Scene 3</strong>
+                </div>
+
+                <div class="panel">
+                    🎬 <br>
+                    <strong>Scene 4</strong>
+                </div>
+
+            </div>
+
+        </section>
+
+        {% endif %}
+
+
+        <footer>
+            💜 Powered by Gemini AI | ComicCraft
+        </footer>
+
+    </div>
 
 </body>
 </html>
