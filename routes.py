@@ -5,7 +5,7 @@ client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY"))
 
 def generate_comic(prompt):
     response = client.models.generate_content(
-        model="gemini-2.5-flash",
+        model="gemini-3.8-flash",
         contents=f"""
         Create a simple 4-scene comic story based on this idea:
 
