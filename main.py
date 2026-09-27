@@ -10,9 +10,9 @@ templates = Jinja2Templates(directory="templates")
 @app.get("/")
 def home(request: Request):
     return templates.TemplateResponse(
-        request=request,
-        name="index.html",
-        context={"request": request}
+    request,
+    "index.html",
+    {}
     )
 
 
@@ -24,10 +24,7 @@ async def generate(request: Request):
     result = generate_comic(prompt)
 
     return templates.TemplateResponse(
-        request=request,
-        name="index.html",
-        context={
-            "request": request,
-            "result": result
-        }
+    request,
+    "index.html",
+    {"result": result}
     )
